@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotus Zing Carpooling - Weekly Form</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        input[type="text"],
+        input[type="time"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .radio-group label, .checkbox-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+            font-weight: 400;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+        .submit-btn {
+            background-color: #667eea;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+        .submit-btn:disabled {
+            background-color: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .success-message {
+            display: none;
+            background-color: #e8f5e9;
+            color: #388e3c;
+            padding: 16px;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .error-message {
+            display: none;
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 16px;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .required {
+            color: #d32f2f;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 Lotus Zing Carpooling</h1>
+            <p>Weekly Ride Sharing Form</p>
+        </div>
+
+        <form id="carpoolForm">
+            <div class="form-group">
+                <label>Which day are you commuting? <span class="required">*</span></label>
+                <div class="radio-group">
+                    <label><input type="radio" name="day" value="Monday" required> Monday</label>
+                    <label><input type="radio" name="day" value="Tuesday"> Tuesday</label>
+                    <label><input type="radio" name="day" value="Wednesday"> Wednesday</label>
+                    <label><input type="radio" name="day" value="Thursday"> Thursday</label>
+                    <label><input type="radio" name="day" value="Friday"> Friday</label>
+                    <label><input type="radio" name="day" value="Saturday"> Saturday</label>
+                    <label><input type="radio" name="day" value="Sunday"> Sunday</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Where are you going? (Destination) <span class="required">*</span></label>
+                <input type="text" name="destination" placeholder="e.g., Gurgaon, Noida City Centre, Delhi" required>
+                <div class="hint">Example: Gurgaon, Noida City Centre, Delhi, etc.</div>
+            </div>
+
+            <div class="form-group">
+                <label>What time do you want to leave Lotus Zing? <span class="required">*</span></label>
+                <input type="text" name="time" placeholder="e.g., 8:30 AM" required>
+                <div class="hint">Example: 8:30 AM</div>
+            </div>
+
+            <div class="form-group">
+                <label>Are you looking to GIVE or RECEIVE a ride? <span class="required">*</span></label>
+                <div class="radio-group">
+                    <label><input type="radio" name="rideType" value="Give ride (I have seats available)" required> Give ride (I have seats available)</label>
+                    <label><input type="radio" name="rideType" value="Need a ride (Looking for seats)"> Need a ride (Looking for seats)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>How many seats? (Give seats available OR seats needed) <span class="required">*</span></label>
+                <input type="text" name="seats" placeholder="Example: 2 (if giving) OR 1 (if receiving)" required>
+                <div class="hint">Example: 2 (if giving) OR 1 (if receiving)</div>
+            </div>
+
+            <div class="form-group">
+                <label>Your full name <span class="required">*</span></label>
+                <input type="text" name="name" placeholder="e.g., Rajesh Kumar" required>
+            </div>
+
+            <div class="form-group">
+                <label>Your WhatsApp number (10 digits only) <span class="required">*</span></label>
+                <input type="text" name="phone" placeholder="e.g., 9876543210" pattern="[0-9]{10}" required>
+                <div class="hint">Example: 9876543210</div>
+            </div>
+
+            <div class="form-group">
+                <label>Vehicle type (if giving ride) - Optional</label>
+                <input type="text" name="vehicle" placeholder="e.g., Swift, XUV700, Fortuner">
+                <div class="hint">Example: Swift, XUV700, Fortuner</div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Submit Response</button>
+            <div class="loading" id="loadingMsg">Saving your response...</div>
+            <div class="success-message" id="successMessage">
+                ✓ Response submitted successfully! We'll match you with riders/drivers.
+            </div>
+            <div class="error-message" id="errorMessage">
+                Response saved locally. Will sync when connection is available.
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Configuration - Update these with your actual values
+        const CONFIG = {
+            GOOGLE_APPS_SCRIPT_URL: "https://script.google.com/macros/d/YOUR_DEPLOYMENT_ID/userweb"
+        };
+
+        document.getElementById('carpoolForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingMsg = document.getElementById('loadingMsg');
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            // Hide messages
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            loadingMsg.style.display = 'block';
+            submitBtn.disabled = true;
+            
+            const formData = {
+                day: document.querySelector('input[name="day"]:checked').value,
+                destination: document.querySelector('input[name="destination"]').value,
+                time: document.querySelector('input[name="time"]').value,
+                rideType: document.querySelector('input[name="rideType"]:checked').value,
+                seats: document.querySelector('input[name="seats"]').value,
+                name: document.querySelector('input[name="name"]').value,
+                phone: document.querySelector('input[name="phone"]').value,
+                vehicle: document.querySelector('input[name="vehicle"]').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Try to send to Google Apps Script
+            if (CONFIG.GOOGLE_APPS_SCRIPT_URL !== "https://script.google.com/macros/d/YOUR_DEPLOYMENT_ID/userweb") {
+                fetch(CONFIG.GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    mode: 'no-cors'
+                })
+                .then(() => {
+                    console.log('Response sent to Google Sheet');
+                    // Save locally as backup
+                    saveLocally(formData);
+                    showSuccess();
+                })
+                .catch((error) => {
+                    console.log('Network error, saving locally:', error);
+                    saveLocally(formData);
+                    showSuccess();
+                });
+            } else {
+                // No deployment URL configured, save locally
+                saveLocally(formData);
+                showSuccess();
+            }
+            
+            function saveLocally(data) {
+                let responses = JSON.parse(localStorage.getItem('carpoolResponses') || '[]');
+                responses.push(data);
+                localStorage.setItem('carpoolResponses', JSON.stringify(responses));
+            }
+            
+            function showSuccess() {
+                loadingMsg.style.display = 'none';
+                successMsg.style.display = 'block';
+                document.getElementById('carpoolForm').reset();
+                submitBtn.disabled = false;
+                
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

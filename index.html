@@ -1,290 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotus Zing Carpooling - Weekly Form</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-        .header p {
-            color: #666;
-            font-size: 14px;
-        }
-        .form-group {
-            margin-bottom: 24px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-        }
-        input[type="text"],
-        input[type="time"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
-        }
-        input[type="text"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        .radio-group, .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .radio-group label, .checkbox-group label {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0;
-            font-weight: 400;
-        }
-        input[type="radio"],
-        input[type="checkbox"] {
-            margin-right: 10px;
-            cursor: pointer;
-        }
-        .hint {
-            font-size: 12px;
-            color: #999;
-            margin-top: 4px;
-        }
-        .submit-btn {
-            background-color: #667eea;
-            color: white;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-            transition: all 0.3s;
-        }
-        .submit-btn:hover {
-            background-color: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
-        }
-        .submit-btn:disabled {
-            background-color: #999;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .success-message {
-            display: none;
-            background-color: #e8f5e9;
-            color: #388e3c;
-            padding: 16px;
-            border-radius: 6px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .error-message {
-            display: none;
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 16px;
-            border-radius: 6px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .required {
-            color: #d32f2f;
-        }
-        .loading {
-            display: none;
-            text-align: center;
-            color: #667eea;
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zing Carpooling — Lotus Zing Society</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink: #0d0c1d;
+      --ink2: #3d3a5c;
+      --ink3: #7b78a0;
+      --surface: #eef2ff;
+      --card: #ffffff;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --green: #16a34a;
+      --orange: #ea580c;
+      --red: #dc2626;
+      --teal: #0d9488;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: var(--surface);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACKGROUND TEXTURE */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(79,70,229,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(124,58,237,0.06) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 56px 0 40px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(79,70,229,0.1);
+      border: 1px solid rgba(79,70,229,0.2);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .hero h1 {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-size: clamp(36px, 10vw, 52px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--ink3);
+      line-height: 1.7;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    /* STATS ROW */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 32px 0;
+    }
+
+    .stat {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px 10px;
+      text-align: center;
+      border: 1px solid rgba(79,70,229,0.08);
+      box-shadow: 0 2px 12px rgba(13,12,29,0.04);
+    }
+
+    .stat-num {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--ink3);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* SECTION LABEL */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink3);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 36px 0 14px;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 22px 24px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(13,12,29,0.06);
+      box-shadow: 0 2px 16px rgba(13,12,29,0.05);
+      text-decoration: none;
+      display: block;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--card-accent, var(--accent));
+      border-radius: 20px 20px 0 0;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(13,12,29,0.10);
+    }
+
+    .card:active {
+      transform: translateY(-1px);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      background: var(--icon-bg, rgba(79,70,229,0.08));
+      flex-shrink: 0;
+    }
+
+    .card-arrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--card-accent, var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .card-arrow svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: white;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card h3 {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 5px;
+      letter-spacing: -0.3px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--ink3);
+      line-height: 1.6;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 20px;
+      margin-top: 10px;
+      background: var(--tag-bg);
+      color: var(--tag-color);
+    }
+
+    /* CARD VARIANTS */
+    .card-registry { --card-accent: #4f46e5; --icon-bg: rgba(79,70,229,0.08); --tag-bg: rgba(79,70,229,0.08); --tag-color: #4f46e5; }
+    .card-weekly   { --card-accent: #16a34a; --icon-bg: rgba(22,163,74,0.08);  --tag-bg: rgba(22,163,74,0.08);  --tag-color: #16a34a; }
+    .card-instant  { --card-accent: #dc2626; --icon-bg: rgba(220,38,38,0.08);  --tag-bg: rgba(220,38,38,0.08);  --tag-color: #dc2626; }
+    .card-pause    { --card-accent: #ea580c; --icon-bg: rgba(234,88,12,0.08);  --tag-bg: rgba(234,88,12,0.08);  --tag-color: #ea580c; }
+
+    /* HOW IT WORKS */
+    .how {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid rgba(13,12,29,0.06);
+      box-shadow: 0 2px 16px rgba(13,12,29,0.05);
+      margin-top: 8px;
+    }
+
+    .how h3 {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 18px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .step:last-child { margin-bottom: 0; }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      font-size: 13px;
+      color: var(--ink2);
+      line-height: 1.6;
+    }
+
+    .step-text strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(13,12,29,0.06);
+    }
+
+    .footer p {
+      font-size: 12px;
+      color: var(--ink3);
+      line-height: 1.7;
+    }
+
+    .footer strong {
+      color: var(--ink2);
+      font-weight: 500;
+    }
+
+    /* ANIMATE IN */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up:nth-child(1) { animation-delay: 0.1s; }
+    .fade-up:nth-child(2) { animation-delay: 0.2s; }
+    .fade-up:nth-child(3) { animation-delay: 0.3s; }
+    .fade-up:nth-child(4) { animation-delay: 0.4s; }
+    .fade-up:nth-child(5) { animation-delay: 0.5s; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🚗 Lotus Zing Carpooling</h1>
-            <p>Weekly Ride Sharing Form</p>
-        </div>
+  <div class="wrap">
 
-        <form id="carpoolForm">
-            <div class="form-group">
-                <label>Which day are you commuting? <span class="required">*</span></label>
-                <div class="radio-group">
-                    <label><input type="radio" name="day" value="Monday" required> Monday</label>
-                    <label><input type="radio" name="day" value="Tuesday"> Tuesday</label>
-                    <label><input type="radio" name="day" value="Wednesday"> Wednesday</label>
-                    <label><input type="radio" name="day" value="Thursday"> Thursday</label>
-                    <label><input type="radio" name="day" value="Friday"> Friday</label>
-                    <label><input type="radio" name="day" value="Saturday"> Saturday</label>
-                    <label><input type="radio" name="day" value="Sunday"> Sunday</label>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Where are you going? (Destination) <span class="required">*</span></label>
-                <input type="text" name="destination" placeholder="e.g., Gurgaon, Noida City Centre, Delhi" required>
-                <div class="hint">Example: Gurgaon, Noida City Centre, Delhi, etc.</div>
-            </div>
-
-            <div class="form-group">
-                <label>What time do you want to leave Lotus Zing? <span class="required">*</span></label>
-                <input type="text" name="time" placeholder="e.g., 8:30 AM" required>
-                <div class="hint">Example: 8:30 AM</div>
-            </div>
-
-            <div class="form-group">
-                <label>Are you looking to GIVE or RECEIVE a ride? <span class="required">*</span></label>
-                <div class="radio-group">
-                    <label><input type="radio" name="rideType" value="Give ride (I have seats available)" required> Give ride (I have seats available)</label>
-                    <label><input type="radio" name="rideType" value="Need a ride (Looking for seats)"> Need a ride (Looking for seats)</label>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>How many seats? (Give seats available OR seats needed) <span class="required">*</span></label>
-                <input type="text" name="seats" placeholder="Example: 2 (if giving) OR 1 (if receiving)" required>
-                <div class="hint">Example: 2 (if giving) OR 1 (if receiving)</div>
-            </div>
-
-            <div class="form-group">
-                <label>Your full name <span class="required">*</span></label>
-                <input type="text" name="name" placeholder="e.g., Rajesh Kumar" required>
-            </div>
-
-            <div class="form-group">
-                <label>Your WhatsApp number (10 digits only) <span class="required">*</span></label>
-                <input type="text" name="phone" placeholder="e.g., 9876543210" pattern="[0-9]{10}" required>
-                <div class="hint">Example: 9876543210</div>
-            </div>
-
-            <div class="form-group">
-                <label>Vehicle type (if giving ride) - Optional</label>
-                <input type="text" name="vehicle" placeholder="e.g., Swift, XUV700, Fortuner">
-                <div class="hint">Example: Swift, XUV700, Fortuner</div>
-            </div>
-
-            <button type="submit" class="submit-btn" id="submitBtn">Submit Response</button>
-            <div class="loading" id="loadingMsg">Saving your response...</div>
-            <div class="success-message" id="successMessage">
-                ✓ Response submitted successfully! We'll match you with riders/drivers.
-            </div>
-            <div class="error-message" id="errorMessage">
-                Response saved locally. Will sync when connection is available.
-            </div>
-        </form>
+    <!-- HERO -->
+    <div class="hero fade-up">
+      <div class="badge">Lotus Zing Society · Sector 168, Noida</div>
+      <h1>Zing<br><span>Carpooling</span></h1>
+      <p>Share rides with your neighbours. Save money, reduce traffic, build community.</p>
     </div>
 
-    <script>
-        // Configuration - Update these with your actual values
-        const CONFIG = {
-            GOOGLE_APPS_SCRIPT_URL: "https://script.google.com/macros/d/YOUR_DEPLOYMENT_ID/userweb"
-        };
+    <!-- STATS -->
+    <div class="stats fade-up">
+      <div class="stat">
+        <div class="stat-num">₹0</div>
+        <div class="stat-label">Cost</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">7PM</div>
+        <div class="stat-label">Sunday match</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Instant rides</div>
+      </div>
+    </div>
 
-        document.getElementById('carpoolForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const loadingMsg = document.getElementById('loadingMsg');
-            const successMsg = document.getElementById('successMessage');
-            const errorMsg = document.getElementById('errorMessage');
-            
-            // Hide messages
-            successMsg.style.display = 'none';
-            errorMsg.style.display = 'none';
-            loadingMsg.style.display = 'block';
-            submitBtn.disabled = true;
-            
-            const formData = {
-                day: document.querySelector('input[name="day"]:checked').value,
-                destination: document.querySelector('input[name="destination"]').value,
-                time: document.querySelector('input[name="time"]').value,
-                rideType: document.querySelector('input[name="rideType"]:checked').value,
-                seats: document.querySelector('input[name="seats"]').value,
-                name: document.querySelector('input[name="name"]').value,
-                phone: document.querySelector('input[name="phone"]').value,
-                vehicle: document.querySelector('input[name="vehicle"]').value,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Try to send to Google Apps Script
-            if (CONFIG.GOOGLE_APPS_SCRIPT_URL !== "https://script.google.com/macros/d/YOUR_DEPLOYMENT_ID/userweb") {
-                fetch(CONFIG.GOOGLE_APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(formData),
-                    mode: 'no-cors'
-                })
-                .then(() => {
-                    console.log('Response sent to Google Sheet');
-                    // Save locally as backup
-                    saveLocally(formData);
-                    showSuccess();
-                })
-                .catch((error) => {
-                    console.log('Network error, saving locally:', error);
-                    saveLocally(formData);
-                    showSuccess();
-                });
-            } else {
-                // No deployment URL configured, save locally
-                saveLocally(formData);
-                showSuccess();
-            }
-            
-            function saveLocally(data) {
-                let responses = JSON.parse(localStorage.getItem('carpoolResponses') || '[]');
-                responses.push(data);
-                localStorage.setItem('carpoolResponses', JSON.stringify(responses));
-            }
-            
-            function showSuccess() {
-                loadingMsg.style.display = 'none';
-                successMsg.style.display = 'block';
-                document.getElementById('carpoolForm').reset();
-                submitBtn.disabled = false;
-                
-                setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 3000);
-            }
-        });
-    </script>
+    <!-- MAIN ACTIONS -->
+    <div class="section-label fade-up">Get started</div>
+
+    <a class="card card-registry fade-up" href="https://docs.google.com/forms/d/e/1FAIpQLSeICVc-qkvirqV7uBSMPhGE9aEIPTMY1tDkrINuNxf5cg0w1Q/viewform" target="_blank">
+      <div class="card-top">
+        <div class="card-icon">🏠</div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+      <h3>Join the Registry</h3>
+      <p>Sign up once with your regular commute details. We'll match you every week automatically.</p>
+      <span class="card-tag">One-time signup</span>
+    </a>
+
+    <a class="card card-weekly fade-up" href="https://docs.google.com/forms/d/e/1FAIpQLSf_N2e7myzHl7CXEn0_FAlbezfnyQaFLyaLj_VIyyfzGsCy6w/viewform" target="_blank">
+      <div class="card-top">
+        <div class="card-icon">📅</div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+      <h3>Weekly Carpool Form</h3>
+      <p>Tell us your rides for this week. Every Sunday at 7 PM, you'll get a board of all drivers and riders.</p>
+      <span class="card-tag">Fill weekly</span>
+    </a>
+
+    <div class="section-label fade-up">Need a ride now?</div>
+
+    <a class="card card-instant fade-up" href="https://docs.google.com/forms/d/e/1FAIpQLSewMSHc5AgTExsV4uzWbJLjlnDOa4oNGx3k4pjHkSz8QYunrA/viewform" target="_blank">
+      <div class="card-top">
+        <div class="card-icon">⚡</div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+      <h3>Instant Ride Request</h3>
+      <p>Need a ride right now? Submit here and residents going your way will be notified instantly.</p>
+      <span class="card-tag">Real-time alert</span>
+    </a>
+
+    <div class="section-label fade-up">Manage your account</div>
+
+    <a class="card card-pause fade-up" href="https://docs.google.com/forms/d/e/1FAIpQLSc6xzegs7axr3FBy0hxmbKUyJFPcaqMxNWkUKCyeI61-eWC-w/viewform" target="_blank">
+      <div class="card-top">
+        <div class="card-icon">⏸️</div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+      <h3>Pause or Resume</h3>
+      <p>Going on holiday or not commuting this month? Pause your account and resume anytime.</p>
+      <span class="card-tag">Manage status</span>
+    </a>
+
+    <!-- HOW IT WORKS -->
+    <div class="section-label fade-up">How it works</div>
+
+    <div class="how fade-up">
+      <h3>Simple as 1-2-3</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Register once</strong> with your commute details — destination, timing, days, and whether you drive or ride.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Every Sunday at 7 PM</strong>, you get a beautifully formatted email with all drivers and riders for the week.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>WhatsApp your match</strong> directly to coordinate pickup point, time, and cost sharing.</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer fade-up">
+      <p>
+        Built for <strong>Lotus Zing Society, Sector 168, Noida</strong><br>
+        Powered by <strong>Zing Carpooling</strong> · Completely free<br><br>
+        Questions? Ask in the Carpooling WhatsApp group.
+      </p>
+    </div>
+
+  </div>
 </body>
 </html>

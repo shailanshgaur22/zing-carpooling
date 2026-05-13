@@ -1,472 +1,814 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zing Carpooling — Lotus Zing Society</title>
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zing Carpooling — Lotus Zing Society</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --ink: #0d0c1d;
-      --ink2: #3d3a5c;
-      --ink3: #7b78a0;
-      --surface: #eef2ff;
-      --card: #ffffff;
-      --accent: #4f46e5;
-      --accent2: #7c3aed;
-      --green: #16a34a;
-      --orange: #ea580c;
-      --red: #dc2626;
-      --teal: #0d9488;
-    }
+  :root {
+    --indigo-deep: #1e1b4b;
+    --indigo-mid: #312e81;
+    --indigo-bright: #4f46e5;
+    --indigo-light: #6366f1;
+    --lavender: #a5b4fc;
+    --lavender-light: #c4b5fd;
+    --surface: #eef2ff;
+    --card: #ffffff;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --green-border: #bbf7d0;
+    --orange: #ea580c;
+    --orange-light: #ffedd5;
+    --orange-border: #fed7aa;
+    --text-primary: #1e1b4b;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+  }
 
-    html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      background: var(--surface);
-      color: var(--ink);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--surface);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-    /* BACKGROUND TEXTURE */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(79,70,229,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(124,58,237,0.06) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+  }
 
-    .wrap {
-      position: relative;
-      z-index: 1;
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 0 20px 60px;
-    }
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--indigo-deep), var(--indigo-mid));
+    padding: 48px 28px 36px;
+    position: relative;
+    overflow: hidden;
+  }
 
-    /* HERO */
-    .hero {
-      padding: 56px 0 40px;
-      text-align: center;
-    }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(79,70,229,0.1);
-      border: 1px solid rgba(79,70,229,0.2);
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
+  .hero-glow-1 {
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
 
-    .badge::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.3); }
-    }
+  .hero-content { position: relative; z-index: 1; }
 
-    .hero h1 {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      font-size: clamp(36px, 10vw, 52px);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -1.5px;
-      color: var(--ink);
-      margin-bottom: 14px;
-    }
+  .live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--lavender-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
 
-    .hero h1 span {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+  .live-dot {
+    width: 5px; height: 5px;
+    background: #86efac;
+    border-radius: 50%;
+    animation: blink 1.5s ease-in-out infinite;
+  }
 
-    .hero p {
-      font-size: 15px;
-      color: var(--ink3);
-      line-height: 1.7;
-      max-width: 320px;
-      margin: 0 auto;
-    }
+  @keyframes blink {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px #86efac; }
+    50% { opacity: 0.3; box-shadow: none; }
+  }
 
-    /* STATS ROW */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 32px 0;
-    }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 20vw, 96px);
+    line-height: 0.88;
+    color: white;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
 
-    .stat {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 16px 10px;
-      text-align: center;
-      border: 1px solid rgba(79,70,229,0.08);
-      box-shadow: 0 2px 12px rgba(13,12,29,0.04);
-    }
+  .hero-title .sub {
+    display: block;
+    font-size: clamp(42px, 12vw, 56px);
+    color: var(--lavender);
+    letter-spacing: 6px;
+  }
 
-    .stat-num {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      font-size: 26px;
-      font-weight: 800;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
+  .hero-hindi {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 14px;
+    color: rgba(196,181,253,0.75);
+    margin: 10px 0 28px;
+    font-weight: 400;
+  }
 
-    .stat-label {
-      font-size: 10px;
-      color: var(--ink3);
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
 
-    /* SECTION LABEL */
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--ink3);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin: 36px 0 14px;
-    }
+  .hstat {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 14px 8px;
+    text-align: center;
+  }
 
-    /* CARDS */
-    .card {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 22px 24px;
-      margin-bottom: 12px;
-      border: 1px solid rgba(13,12,29,0.06);
-      box-shadow: 0 2px 16px rgba(13,12,29,0.05);
-      text-decoration: none;
-      display: block;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
+  .hstat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
 
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--card-accent, var(--accent));
-      border-radius: 20px 20px 0 0;
-    }
+  .hstat-val.green { color: #86efac; }
+  .hstat-val.lavender { color: var(--lavender-light); }
+  .hstat-val.amber { color: #fbbf24; }
 
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(13,12,29,0.10);
-    }
+  .hstat-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
 
-    .card:active {
-      transform: translateY(-1px);
-    }
+  /* ROAD SCENE */
+  .road-scene {
+    background: linear-gradient(180deg, var(--indigo-mid) 0%, var(--indigo-deep) 100%);
+    height: 160px;
+    overflow: hidden;
+  }
 
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
+  .road-svg { width: 100%; height: 100%; display: block; }
 
-    .card-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      background: var(--icon-bg, rgba(79,70,229,0.08));
-      flex-shrink: 0;
-    }
+  .dash-anim { animation: moveDash 1s linear infinite; }
 
-    .card-arrow {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--card-accent, var(--accent));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 6px;
-    }
+  @keyframes moveDash {
+    from { transform: translateX(0); }
+    to { transform: translateX(-48px); }
+  }
 
-    .card-arrow svg {
-      width: 14px;
-      height: 14px;
-      fill: none;
-      stroke: white;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+  .car-float { animation: carFloat 2.5s ease-in-out infinite; }
 
-    .card h3 {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 5px;
-      letter-spacing: -0.3px;
-    }
+  @keyframes carFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
 
-    .card p {
-      font-size: 13px;
-      color: var(--ink3);
-      line-height: 1.6;
-    }
+  /* BODY */
+  .body { padding: 28px 20px 0; }
 
-    .card-tag {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      padding: 3px 9px;
-      border-radius: 20px;
-      margin-top: 10px;
-      background: var(--tag-bg);
-      color: var(--tag-color);
-    }
+  .section-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--indigo-light);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
 
-    /* CARD VARIANTS */
-    .card-registry { --card-accent: #4f46e5; --icon-bg: rgba(79,70,229,0.08); --tag-bg: rgba(79,70,229,0.08); --tag-color: #4f46e5; }
-    .card-weekly   { --card-accent: #16a34a; --icon-bg: rgba(22,163,74,0.08);  --tag-bg: rgba(22,163,74,0.08);  --tag-color: #16a34a; }
-    .card-instant  { --card-accent: #dc2626; --icon-bg: rgba(220,38,38,0.08);  --tag-bg: rgba(220,38,38,0.08);  --tag-color: #dc2626; }
-    .card-pause    { --card-accent: #ea580c; --icon-bg: rgba(234,88,12,0.08);  --tag-bg: rgba(234,88,12,0.08);  --tag-color: #ea580c; }
+  /* COST BOX */
+  .cost-box {
+    background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
 
-    /* HOW IT WORKS */
-    .how {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 24px;
-      border: 1px solid rgba(13,12,29,0.06);
-      box-shadow: 0 2px 16px rgba(13,12,29,0.05);
-      margin-top: 8px;
-    }
+  .cost-icon {
+    width: 46px; height: 46px;
+    background: linear-gradient(135deg, var(--indigo-bright), #7c3aed);
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
 
-    .how h3 {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 18px;
-    }
+  .cost-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--indigo-deep);
+    margin-bottom: 5px;
+  }
 
-    .step {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
+  .cost-desc {
+    font-size: 12px;
+    color: var(--indigo-light);
+    line-height: 1.6;
+    font-weight: 500;
+  }
 
-    .step:last-child { margin-bottom: 0; }
+  /* ROLES */
+  .roles-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
 
-    .step-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: white;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
+  .role-card {
+    flex: 1;
+    border-radius: 16px;
+    padding: 18px 14px;
+    text-align: center;
+  }
 
-    .step-text {
-      font-size: 13px;
-      color: var(--ink2);
-      line-height: 1.6;
-    }
+  .role-card.driver {
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    border: 1px solid var(--green-border);
+  }
 
-    .step-text strong {
-      color: var(--ink);
-      font-weight: 500;
-    }
+  .role-card.rider {
+    background: linear-gradient(135deg, #fff7ed, #ffedd5);
+    border: 1px solid var(--orange-border);
+  }
 
-    /* FOOTER */
-    .footer {
-      text-align: center;
-      margin-top: 48px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(13,12,29,0.06);
-    }
+  .role-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
 
-    .footer p {
-      font-size: 12px;
-      color: var(--ink3);
-      line-height: 1.7;
-    }
+  .role-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
 
-    .footer strong {
-      color: var(--ink2);
-      font-weight: 500;
-    }
+  .role-card.driver .role-title { color: #14532d; }
+  .role-card.rider .role-title { color: #7c2d12; }
 
-    /* ANIMATE IN */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.5s ease forwards;
-    }
+  .role-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
 
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
+  .role-card.driver .role-badge { background: #dcfce7; color: var(--green); }
+  .role-card.rider .role-badge { background: #ffedd5; color: var(--orange); }
 
-    .fade-up:nth-child(1) { animation-delay: 0.1s; }
-    .fade-up:nth-child(2) { animation-delay: 0.2s; }
-    .fade-up:nth-child(3) { animation-delay: 0.3s; }
-    .fade-up:nth-child(4) { animation-delay: 0.4s; }
-    .fade-up:nth-child(5) { animation-delay: 0.5s; }
-  </style>
+  .role-desc {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  .role-card.driver .role-desc { color: #16a34a; }
+  .role-card.rider .role-desc { color: var(--orange); }
+
+  /* HOW IT WORKS */
+  .how-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .how-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: white;
+    border-radius: 14px;
+    padding: 14px 16px;
+    border: 1px solid rgba(99,102,241,0.08);
+    box-shadow: 0 2px 10px rgba(99,102,241,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .how-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99,102,241,0.12);
+  }
+
+  .how-num {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, var(--indigo-bright), #7c3aed);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .how-text { flex: 1; }
+
+  .how-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--indigo-deep);
+    margin-bottom: 2px;
+  }
+
+  .how-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .how-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .b-purple { background: #f0f4ff; color: var(--indigo-bright); }
+  .b-blue   { background: #eff6ff; color: #1d4ed8; }
+  .b-green  { background: #dcfce7; color: var(--green); }
+  .b-orange { background: #ffedd5; color: var(--orange); }
+
+  /* FORM CARDS */
+  .forms-section { margin-bottom: 28px; }
+
+  .form-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: white;
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(99,102,241,0.08);
+    box-shadow: 0 2px 10px rgba(99,102,241,0.06);
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-accent, var(--indigo-bright));
+    border-radius: 16px 16px 0 0;
+  }
+
+  .form-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(99,102,241,0.12);
+  }
+
+  .form-icon {
+    width: 46px; height: 46px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .form-text { flex: 1; }
+
+  .form-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--indigo-deep);
+    margin-bottom: 3px;
+  }
+
+  .form-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .form-tag {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  .form-arrow {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: white;
+    background: var(--card-accent, var(--indigo-bright));
+  }
+
+  .fc-registry { --card-accent: #4f46e5; }
+  .fi-registry { background: #f0f4ff; }
+  .ft-registry { background: #f0f4ff; color: var(--indigo-bright); }
+
+  .fc-weekly { --card-accent: #16a34a; }
+  .fi-weekly { background: #dcfce7; }
+  .ft-weekly { background: #dcfce7; color: var(--green); }
+
+  .fc-instant { --card-accent: #dc2626; }
+  .fi-instant { background: #fee2e2; }
+  .ft-instant { background: #fee2e2; color: #dc2626; }
+
+  .fc-pause { --card-accent: #ea580c; }
+  .fi-pause { background: #ffedd5; }
+  .ft-pause { background: #ffedd5; color: var(--orange); }
+
+  /* CTA BAND */
+  .cta-band {
+    background: linear-gradient(135deg, var(--indigo-bright), #7c3aed);
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin: 0 0 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .cta-inner { position: relative; z-index: 1; }
+
+  .cta-url-box {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .cta-url-box:hover { background: rgba(255,255,255,0.15); }
+
+  .cta-url-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .cta-url-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.3px;
+  }
+
+  .cta-url-arrow {
+    width: 36px; height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--indigo-bright);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .cta-hindi {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .cta-english {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    text-align: center;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .footer-text {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .footer-brand {
+    font-size: 10px;
+    color: rgba(99,102,241,0.4);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up { animation: fadeUp 0.5s ease forwards; opacity: 0; }
+  .d1 { animation-delay: 0.05s; }
+  .d2 { animation-delay: 0.1s; }
+  .d3 { animation-delay: 0.15s; }
+  .d4 { animation-delay: 0.2s; }
+  .d5 { animation-delay: 0.25s; }
+  .d6 { animation-delay: 0.3s; }
+  .d7 { animation-delay: 0.35s; }
+  .d8 { animation-delay: 0.4s; }
+</style>
 </head>
 <body>
-  <div class="wrap">
+<div class="wrap">
 
-    <!-- HERO -->
-    <div class="hero fade-up">
-      <div class="badge">Lotus Zing Society · Sector 168, Noida</div>
-      <h1>Zing<br><span>Carpooling</span></h1>
-      <p>Share rides with your neighbours. Save money, reduce traffic, build community.</p>
-    </div>
-
-    <!-- STATS -->
-    <div class="stats fade-up">
-      <div class="stat">
-        <div class="stat-num">₹0</div>
-        <div class="stat-label">Cost</div>
+  <!-- HERO -->
+  <div class="hero fade-up d1">
+    <div class="hero-grid"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-content">
+      <div class="live-pill">
+        <div class="live-dot"></div>
+        Lotus Zing Society · Live Now
       </div>
-      <div class="stat">
-        <div class="stat-num">7PM</div>
-        <div class="stat-label">Sunday match</div>
+      <div class="hero-title">
+        ZING
+        <span class="sub">CARPOOLING</span>
       </div>
-      <div class="stat">
-        <div class="stat-num">24/7</div>
-        <div class="stat-label">Instant rides</div>
-      </div>
-    </div>
-
-    <!-- MAIN ACTIONS -->
-    <div class="section-label fade-up">Get started</div>
-
-    <a class="card card-registry fade-up" href="https://docs.google.com/forms/d/e/1FAIpQLSeICVc-qkvirqV7uBSMPhGE9aEIPTMY1tDkrINuNxf5cg0w1Q/viewform" target="_blank">
-      <div class="card-top">
-        <div class="card-icon">🏠</div>
-        <div class="card-arrow">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <div class="hero-hindi">अपने पड़ोसियों के साथ सफर करें</div>
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-val green">₹0</div>
+          <div class="hstat-label">Platform fee</div>
         </div>
-      </div>
-      <h3>Join the Registry</h3>
-      <p>Sign up once with your regular commute details. We'll match you every week automatically.</p>
-      <span class="card-tag">One-time signup</span>
-    </a>
-
-    <a class="card card-weekly fade-up" href="https://docs.google.com/forms/d/e/1FAIpQLSf_N2e7myzHl7CXEn0_FAlbezfnyQaFLyaLj_VIyyfzGsCy6w/viewform" target="_blank">
-      <div class="card-top">
-        <div class="card-icon">📅</div>
-        <div class="card-arrow">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <div class="hstat">
+          <div class="hstat-val lavender">7 PM</div>
+          <div class="hstat-label">Sunday match</div>
         </div>
-      </div>
-      <h3>Weekly Carpool Form</h3>
-      <p>Tell us your rides for this week. Every Sunday at 7 PM, you'll get a board of all drivers and riders.</p>
-      <span class="card-tag">Fill weekly</span>
-    </a>
-
-    <div class="section-label fade-up">Need a ride now?</div>
-
-    <a class="card card-instant fade-up" href="https://docs.google.com/forms/d/e/1FAIpQLSewMSHc5AgTExsV4uzWbJLjlnDOa4oNGx3k4pjHkSz8QYunrA/viewform" target="_blank">
-      <div class="card-top">
-        <div class="card-icon">⚡</div>
-        <div class="card-arrow">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <div class="hstat">
+          <div class="hstat-val amber">24/7</div>
+          <div class="hstat-label">Instant rides</div>
         </div>
-      </div>
-      <h3>Instant Ride Request</h3>
-      <p>Need a ride right now? Submit here and residents going your way will be notified instantly.</p>
-      <span class="card-tag">Real-time alert</span>
-    </a>
-
-    <div class="section-label fade-up">Manage your account</div>
-
-    <a class="card card-pause fade-up" href="https://docs.google.com/forms/d/e/1FAIpQLSc6xzegs7axr3FBy0hxmbKUyJFPcaqMxNWkUKCyeI61-eWC-w/viewform" target="_blank">
-      <div class="card-top">
-        <div class="card-icon">⏸️</div>
-        <div class="card-arrow">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-      </div>
-      <h3>Pause or Resume</h3>
-      <p>Going on holiday or not commuting this month? Pause your account and resume anytime.</p>
-      <span class="card-tag">Manage status</span>
-    </a>
-
-    <!-- HOW IT WORKS -->
-    <div class="section-label fade-up">How it works</div>
-
-    <div class="how fade-up">
-      <h3>Simple as 1-2-3</h3>
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-text"><strong>Register once</strong> with your commute details — destination, timing, days, and whether you drive or ride.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-text"><strong>Every Sunday at 7 PM</strong>, you get a beautifully formatted email with all drivers and riders for the week.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-text"><strong>WhatsApp your match</strong> directly to coordinate pickup point, time, and cost sharing.</div>
       </div>
     </div>
+  </div>
 
-    <!-- FOOTER -->
-    <div class="footer fade-up">
-      <p>
-        Built for <strong>Lotus Zing Society, Sector 168, Noida</strong><br>
-        Powered by <strong>Zing Carpooling</strong> · Completely free<br><br>
+  <!-- ROAD SCENE -->
+  <div class="road-scene">
+    <svg class="road-svg" viewBox="0 0 480 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <filter id="cglow">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <linearGradient id="hbeam" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#a5b4fc" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="100" width="480" height="60" fill="#16163a"/>
+      <rect x="0" y="99" width="480" height="2" fill="rgba(165,180,252,0.2)"/>
+      <g class="dash-anim">
+        <rect x="-24" y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="24"  y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="72"  y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="120" y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="168" y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="216" y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="264" y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="312" y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="360" y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="408" y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+        <rect x="456" y="127" width="36" height="3" rx="1.5" fill="rgba(165,180,252,0.2)"/>
+      </g>
+      <path d="M200 102 L120 100 L120 115 L200 110 Z" fill="url(#hbeam)"/>
+      <g class="car-float" filter="url(#cglow)">
+        <ellipse cx="228" cy="106" rx="78" ry="5" fill="rgba(0,0,0,0.4)"/>
+        <rect x="148" y="68" width="162" height="36" rx="6" fill="#312e81"/>
+        <path d="M176 68 L198 46 L258 46 L280 68 Z" fill="#1e1b4b"/>
+        <path d="M202 49 L198 66 L228 66 L228 49 Z" fill="#4338ca" opacity="0.9"/>
+        <path d="M232 49 L232 66 L254 66 L258 49 Z" fill="#4338ca" opacity="0.9"/>
+        <path d="M202 49 L198 66 L228 66 L228 49 Z" fill="none" stroke="rgba(165,180,252,0.15)" stroke-width="0.5"/>
+        <path d="M232 49 L232 66 L254 66 L258 49 Z" fill="none" stroke="rgba(165,180,252,0.15)" stroke-width="0.5"/>
+        <rect x="229" y="49" width="2" height="17" fill="rgba(165,180,252,0.08)"/>
+        <rect x="148" y="75" width="16" height="7" rx="3.5" fill="#a5b4fc"/>
+        <path d="M148 77 L80 72 L80 86 L148 81 Z" fill="rgba(165,180,252,0.07)"/>
+        <rect x="294" y="75" width="14" height="7" rx="3.5" fill="#f87171" opacity="0.8"/>
+        <path d="M228 68 L228 100" stroke="rgba(165,180,252,0.08)" stroke-width="1" fill="none"/>
+        <rect x="160" y="82" width="12" height="2.5" rx="1.25" fill="rgba(165,180,252,0.15)"/>
+        <rect x="236" y="82" width="12" height="2.5" rx="1.25" fill="rgba(165,180,252,0.15)"/>
+        <circle cx="213" cy="55" r="5" fill="rgba(165,180,252,0.2)"/>
+        <circle cx="243" cy="55" r="5" fill="rgba(165,180,252,0.15)"/>
+        <circle cx="196" cy="56" r="4" fill="rgba(165,180,252,0.12)"/>
+        <circle cx="184" cy="104" r="13" fill="#1e1b4b" stroke="#4338ca" stroke-width="1.5"/>
+        <circle cx="184" cy="104" r="7" fill="#312e81"/>
+        <circle cx="184" cy="104" r="3" fill="#a5b4fc"/>
+        <circle cx="272" cy="104" r="13" fill="#1e1b4b" stroke="#4338ca" stroke-width="1.5"/>
+        <circle cx="272" cy="104" r="7" fill="#312e81"/>
+        <circle cx="272" cy="104" r="3" fill="#a5b4fc"/>
+      </g>
+      <circle cx="60"  cy="30" r="1"   fill="rgba(196,181,253,0.5)"/>
+      <circle cx="100" cy="18" r="1.5" fill="rgba(196,181,253,0.4)"/>
+      <circle cx="160" cy="40" r="0.8" fill="rgba(196,181,253,0.6)"/>
+      <circle cx="320" cy="22" r="1"   fill="rgba(196,181,253,0.4)"/>
+      <circle cx="380" cy="35" r="1.2" fill="rgba(196,181,253,0.5)"/>
+      <circle cx="440" cy="15" r="0.8" fill="rgba(196,181,253,0.6)"/>
+      <circle cx="420" cy="28" r="12"  fill="rgba(196,181,253,0.06)"/>
+      <circle cx="428" cy="24" r="9"   fill="#1e1b4b" opacity="0.9"/>
+    </svg>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <div class="cost-box fade-up d2">
+      <div class="cost-icon">💡</div>
+      <div>
+        <div class="cost-title">How costs work</div>
+        <div class="cost-desc">The platform is free forever. Drivers and riders agree on fuel cost sharing directly — fairly and between themselves.</div>
+      </div>
+    </div>
+
+    <div class="section-label fade-up d3">Who can join?</div>
+    <div class="roles-row fade-up d3">
+      <div class="role-card driver">
+        <span class="role-emoji">🚗</span>
+        <div class="role-title">Offering seats</div>
+        <span class="role-badge">Driver</span>
+        <div class="role-desc">Share your commute. Offset your fuel costs with neighbours going your way.</div>
+      </div>
+      <div class="role-card rider">
+        <span class="role-emoji">🙋</span>
+        <div class="role-title">Need a ride</div>
+        <span class="role-badge">Rider</span>
+        <div class="role-desc">Find a neighbour going your way. Pay your fair share directly.</div>
+      </div>
+    </div>
+
+    <div class="section-label fade-up d4">How it works</div>
+    <div class="how-list fade-up d4">
+      <div class="how-item">
+        <div class="how-num">1</div>
+        <div class="how-text">
+          <div class="how-title">Register once</div>
+          <div class="how-desc">Your name, route, timing. Takes 2 minutes. Never again.</div>
+        </div>
+        <span class="how-badge b-purple">One time</span>
+      </div>
+      <div class="how-item">
+        <div class="how-num">2</div>
+        <div class="how-text">
+          <div class="how-title">Fill weekly form</div>
+          <div class="how-desc">Tell us your rides for this week. Takes 1 minute.</div>
+        </div>
+        <span class="how-badge b-blue">Weekly</span>
+      </div>
+      <div class="how-item">
+        <div class="how-num">3</div>
+        <div class="how-text">
+          <div class="how-title">Get matched Sunday 7 PM</div>
+          <div class="how-desc">See all drivers and riders on your route in one email.</div>
+        </div>
+        <span class="how-badge b-green">Automatic</span>
+      </div>
+      <div class="how-item">
+        <div class="how-num">4</div>
+        <div class="how-text">
+          <div class="how-title">WhatsApp & go</div>
+          <div class="how-desc">Contact your match directly. Agree on cost. Done.</div>
+        </div>
+        <span class="how-badge b-orange">Instant</span>
+      </div>
+    </div>
+
+    <div class="section-label fade-up d5">Get started</div>
+    <div class="forms-section fade-up d5">
+      <a class="form-card fc-registry" href="https://docs.google.com/forms/d/e/1FAIpQLSeICVc-qkvirqV7uBSMPhGE9aEIPTMY1tDkrINuNxf5cg0w1Q/viewform" target="_blank">
+        <div class="form-icon fi-registry">🏠</div>
+        <div class="form-text">
+          <div class="form-title">Join the Registry</div>
+          <div class="form-desc">Sign up once with your regular commute. We match you every week automatically.</div>
+          <span class="form-tag ft-registry">Start here — one time only</span>
+        </div>
+        <div class="form-arrow">→</div>
+      </a>
+      <a class="form-card fc-weekly" href="https://docs.google.com/forms/d/e/1FAIpQLSf_N2e7myzHl7CXEn0_FAlbezfnyQaFLyaLj_VIyyfzGsCy6w/viewform" target="_blank">
+        <div class="form-icon fi-weekly">📅</div>
+        <div class="form-text">
+          <div class="form-title">Weekly Carpool Form</div>
+          <div class="form-desc">Tell us your rides this week. Get the full match board every Sunday at 7 PM.</div>
+          <span class="form-tag ft-weekly">Fill every week</span>
+        </div>
+        <div class="form-arrow" style="background:#16a34a">→</div>
+      </a>
+    </div>
+
+    <div class="section-label fade-up d6">Need a ride now?</div>
+    <div class="forms-section fade-up d6">
+      <a class="form-card fc-instant" href="https://docs.google.com/forms/d/e/1FAIpQLSewMSHc5AgTExsV4uzWbJLjlnDOa4oNGx3k4pjHkSz8QYunrA/viewform" target="_blank">
+        <div class="form-icon fi-instant">⚡</div>
+        <div class="form-text">
+          <div class="form-title">Instant Ride Request</div>
+          <div class="form-desc">Need a ride right now? Submit and matching residents get notified instantly.</div>
+          <span class="form-tag ft-instant">Real-time alert</span>
+        </div>
+        <div class="form-arrow" style="background:#dc2626">→</div>
+      </a>
+    </div>
+
+    <div class="section-label fade-up d7">Manage your account</div>
+    <div class="forms-section fade-up d7">
+      <a class="form-card fc-pause" href="https://docs.google.com/forms/d/e/1FAIpQLSc6xzegs7axr3FBy0hxmbKUyJFPcaqMxNWkUKCyeI61-eWC-w/viewform" target="_blank">
+        <div class="form-icon fi-pause">⏸️</div>
+        <div class="form-text">
+          <div class="form-title">Pause or Resume</div>
+          <div class="form-desc">Going on holiday or not commuting? Pause anytime and resume when you're back.</div>
+          <span class="form-tag ft-pause">Manage your status</span>
+        </div>
+        <div class="form-arrow" style="background:#ea580c">→</div>
+      </a>
+    </div>
+
+    <div class="cta-band fade-up d8">
+      <div class="cta-inner">
+        <a class="cta-url-box" href="https://zingcarpooling.github.io" target="_blank">
+          <div>
+            <div class="cta-url-label">Your carpooling home</div>
+            <div class="cta-url-text">zingcarpooling.github.io</div>
+          </div>
+          <div class="cta-url-arrow">→</div>
+        </a>
+        <div class="cta-hindi">आज ही रजिस्टर करें 🙏</div>
+        <div class="cta-english">Register once. Save every commute.</div>
+      </div>
+    </div>
+
+    <div class="footer fade-up d8">
+      <div class="footer-text">
+        Built with ❤️ for Lotus Zing residents<br>
         Questions? Ask in the Carpooling WhatsApp group.
-      </p>
+      </div>
+      <div class="footer-brand">Zing Carpooling · Sector 168 · Noida</div>
     </div>
 
   </div>
+</div>
 </body>
 </html>
